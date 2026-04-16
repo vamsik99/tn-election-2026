@@ -1,0 +1,235 @@
+constituency_no,name,slug,district_slug,reserved_for
+1,Gummidipoondi,gummidipoondi,thiruvallur,general
+2,Ponneri,ponneri,thiruvallur,sc
+3,Tiruttani,tiruttani,thiruvallur,general
+4,Sholingur,sholingur,vellore,general
+5,Katpadi,katpadi,vellore,general
+6,Ranipet,ranipet,ranipet,general
+7,Arcot,arcot,ranipet,general
+8,Vellore,vellore,vellore,general
+9,Anaikattu,anaikattu,vellore,general
+10,Kilvaithinankuppam,kilvaithinankuppam,vellore,sc
+11,Gudiyatham,gudiyatham,vellore,general
+12,Vaniyambadi,vaniyambadi,tirupathur,general
+13,Ambur,ambur,tirupathur,general
+14,Jolarpet,jolarpet,tirupathur,general
+15,Tirupattur,tirupattur,tirupathur,general
+16,Uthangarai,uthangarai,krishnagiri,st
+17,Bargur,bargur,krishnagiri,general
+18,Krishnagiri,krishnagiri,krishnagiri,general
+19,Veppanahalli,veppanahalli,krishnagiri,general
+20,Hosur,hosur,krishnagiri,general
+21,Thalli,thalli,krishnagiri,sc
+22,Palacodu,palacodu,dharmapuri,general
+23,Pennagaram,pennagaram,dharmapuri,general
+24,Dharmapuri,dharmapuri,dharmapuri,general
+25,Pappireddipatti,pappireddipatti,dharmapuri,sc
+26,Harur,harur,dharmapuri,general
+27,Omalur,omalur,salem,general
+28,Mettur,mettur,salem,general
+29,Edappadi,edappadi,salem,general
+30,Sankari,sankari,salem,general
+31,Salem (West),salem-west,salem,general
+32,Salem (North),salem-north,salem,general
+33,Salem (South),salem-south,salem,sc
+34,Veerapandi,veerapandi,salem,general
+35,Rasipuram,rasipuram,namakkal,general
+36,Senthamangalam,senthamangalam,namakkal,st
+37,Namakkal,namakkal,namakkal,general
+38,Paramathi-Velur,paramathi-velur,namakkal,general
+39,Tiruchengodu,tiruchengodu,namakkal,general
+40,Kumarapalayam,kumarapalayam,namakkal,general
+41,Erode (East),erode-east,erode,general
+42,Erode (West),erode-west,erode,sc
+43,Modakkurichi,modakkurichi,erode,general
+44,Perundurai,perundurai,erode,general
+45,Bhavani,bhavani,erode,general
+46,Anthiyur,anthiyur,erode,general
+47,Gobichettipalayam,gobichettipalayam,erode,general
+48,Bhavanisagar,bhavanisagar,erode,sc
+49,Udhagamandalam,udhagamandalam,nilgiris,general
+50,Gudalur,gudalur,nilgiris,st
+51,Mettuppalayam,mettuppalayam,coimbatore,general
+52,Coimbatore (North),coimbatore-north,coimbatore,general
+53,Thondamuthur,thondamuthur,coimbatore,general
+54,Coimbatore (South),coimbatore-south,coimbatore,general
+55,Singanallur,singanallur,coimbatore,general
+56,Kinathukadavu,kinathukadavu,coimbatore,general
+57,Pollachi,pollachi,coimbatore,general
+58,Valparai,valparai,coimbatore,sc
+59,Sulur,sulur,coimbatore,general
+60,Tiruppur (North),tiruppur-north,tiruppur,general
+61,Tiruppur (South),tiruppur-south,tiruppur,general
+62,Palladam,palladam,tiruppur,general
+63,Udumalaipettai,udumalaipettai,tiruppur,general
+64,Madathukulam,madathukulam,tiruppur,sc
+65,Aravakurichi,aravakurichi,karur,general
+66,Karur,karur,karur,general
+67,Krishnarayapuram,krishnarayapuram,karur,sc
+68,Kulithalai,kulithalai,karur,general
+69,Manapparai,manapparai,tiruchirappalli,general
+70,Srirangam,srirangam,tiruchirappalli,general
+71,Tiruchirappalli (West),tiruchirappalli-west,tiruchirappalli,general
+72,Tiruchirappalli (East),tiruchirappalli-east,tiruchirappalli,general
+73,Thiruverambur,thiruverambur,tiruchirappalli,sc
+74,Lalgudi,lalgudi,tiruchirappalli,general
+75,Manachanallur,manachanallur,tiruchirappalli,general
+76,Musiri,musiri,tiruchirappalli,general
+77,Thuraiyur,thuraiyur,tiruchirappalli,general
+78,Perambalur,perambalur,perambalur,general
+79,Kunnam,kunnam,perambalur,sc
+80,Ariyalur,ariyalur,ariyalur,general
+81,Jayankondam,jayankondam,ariyalur,general
+82,Virudhachalam,virudhachalam,cuddalore,general
+83,Neyveli,neyveli,cuddalore,sc
+84,Panruti,panruti,cuddalore,general
+85,Cuddalore,cuddalore,cuddalore,general
+86,Kurinjipadi,kurinjipadi,cuddalore,general
+87,Bhuvanagiri,bhuvanagiri,cuddalore,general
+88,Chidambaram,chidambaram,cuddalore,general
+89,Kattumannarkoil,kattumannarkoil,cuddalore,sc
+90,Kallakurichi,kallakurichi,kallakurichi,general
+91,Gangavalli,gangavalli,kallakurichi,sc
+92,Attur,attur,salem,general
+93,Yercaud,yercaud,salem,st
+94,Olapadi,olapadi,salem,sc
+95,Tiruvannamalai,tiruvannamalai,tiruvannamalai,general
+96,Kilpennathur,kilpennathur,tiruvannamalai,general
+97,Kalasapakkam,kalasapakkam,tiruvannamalai,sc
+98,Polur,polur,tiruvannamalai,general
+99,Arani,arani,tiruvannamalai,general
+100,Cheyyar,cheyyar,tiruvannamalai,sc
+101,Vandavasi,vandavasi,tiruvannamalai,general
+102,Gingee,gingee,villupuram,general
+103,Mailam,mailam,villupuram,general
+104,Tindivanam,tindivanam,villupuram,general
+105,Vanur,vanur,villupuram,sc
+106,Villupuram,villupuram,villupuram,general
+107,Vikravandi,vikravandi,villupuram,sc
+108,Tirukoilur,tirukoilur,villupuram,general
+109,Ulundurpet,ulundurpet,kallakurichi,general
+110,Sankarapuram,sankarapuram,kallakurichi,general
+111,Rishivandiyam,rishivandiyam,kallakurichi,sc
+112,Vriddhachalam,vriddhachalam,cuddalore,general
+113,Neyveli (Township),neyveli-township,cuddalore,general
+114,Sirkazhi,sirkazhi,nagapattinam,general
+115,Mayiladuthurai,mayiladuthurai,mayiladuthurai,general
+116,Poompuhar,poompuhar,mayiladuthurai,sc
+117,Papanasam,papanasam,thanjavur,general
+118,Thiruvidaimarudur,thiruvidaimarudur,thanjavur,sc
+119,Kumbakonam,kumbakonam,thanjavur,general
+120,Papanasam,papanasam-2,thanjavur,general
+121,Thanjavur,thanjavur,thanjavur,general
+122,Orathanadu,orathanadu,thanjavur,sc
+123,Pattukkottai,pattukkottai,thanjavur,general
+124,Peravurani,peravurani,thanjavur,general
+125,Gandharvakottai,gandharvakottai,pudukkottai,sc
+126,Viralimalai,viralimalai,pudukkottai,general
+127,Pudukkottai,pudukkottai,pudukkottai,general
+128,Thirumayam,thirumayam,pudukkottai,general
+129,Alangudi,alangudi,pudukkottai,sc
+130,Aranthangi,aranthangi,pudukkottai,general
+131,Manamelkudi,manamelkudi,pudukkottai,general
+132,Mannargudi,mannargudi,thiruvarur,general
+133,Thiruvarur,thiruvarur,thiruvarur,sc
+134,Nannilam,nannilam,thiruvarur,general
+135,Vedaranyam,vedaranyam,nagapattinam,sc
+136,Kilvelur,kilvelur,nagapattinam,general
+137,Nagapattinam,nagapattinam,nagapattinam,general
+138,Sembanarkoil,sembanarkoil,nagapattinam,general
+139,Thalaignayiru,thalaignayiru,nagapattinam,sc
+140,Sirkazhi,sirkazhi-2,nagapattinam,general
+141,Karaikal (North),karaikal-north,nagapattinam,general
+142,Karaikal (South),karaikal-south,nagapattinam,sc
+143,Ramanathapuram,ramanathapuram,ramanathapuram,general
+144,Paramakudi,paramakudi,ramanathapuram,sc
+145,Tiruvadanai,tiruvadanai,ramanathapuram,general
+146,Mudukulathur,mudukulathur,ramanathapuram,general
+147,Vilathikulam,vilathikulam,thoothukudi,sc
+148,Thoothukudi,thoothukudi,thoothukudi,general
+149,Tiruchendur,tiruchendur,thoothukudi,general
+150,Srivaikuntam,srivaikuntam,thoothukudi,general
+151,Ottapidaram,ottapidaram,thoothukudi,sc
+152,Kovilpatti,kovilpatti,thoothukudi,general
+153,Erachakulam,erachakulam,thoothukudi,general
+154,Sankarankovil,sankarankovil,virudhunagar,general
+155,Sivakasi,sivakasi,virudhunagar,general
+156,Virudhunagar,virudhunagar,virudhunagar,sc
+157,Aruppukkottai,aruppukkottai,virudhunagar,general
+158,Rajapalayam,rajapalayam,virudhunagar,general
+159,Srivilliputhur,srivilliputhur,virudhunagar,general
+160,Sattur,sattur,virudhunagar,sc
+161,Sivaganga,sivaganga,sivaganga,sc
+162,Manamadurai,manamadurai,sivaganga,general
+163,Karaikudi,karaikudi,sivaganga,general
+164,Tiruppattur,tiruppattur,sivaganga,general
+165,Madurai (East),madurai-east,madurai,general
+166,Madurai (Central),madurai-central,madurai,general
+167,Madurai (West),madurai-west,madurai,general
+168,Madurai (South),madurai-south,madurai,sc
+169,Madurai (North),madurai-north,madurai,general
+170,Sholavandan,sholavandan,madurai,sc
+171,Thirparappu,thirparappu,madurai,general
+172,Melur,melur,madurai,general
+173,Usilampatti,usilampatti,madurai,sc
+174,Andipatti,andipatti,theni,general
+175,Periyakulam,periyakulam,theni,general
+176,Bodinayakanur,bodinayakanur,theni,sc
+177,Cumbum,cumbum,theni,general
+178,Dindigul,dindigul,dindigul,general
+179,Natham,natham,dindigul,sc
+180,Nilakottai,nilakottai,dindigul,general
+181,Oddanchatram,oddanchatram,dindigul,general
+182,Palani,palani,dindigul,general
+183,Vedasandur,vedasandur,dindigul,general
+184,Attur,attur-2,salem,general
+185,Tirunelveli,tirunelveli,tirunelveli,general
+186,Ambasamudram,ambasamudram,tirunelveli,general
+187,Nanguneri,nanguneri,tirunelveli,sc
+188,Radhapuram,radhapuram,tirunelveli,general
+189,Tenkasi,tenkasi,tenkasi,general
+190,Alangulam,alangulam,tenkasi,sc
+191,Kadayanallur,kadayanallur,tenkasi,general
+192,Sankarankovil,sankarankovil-2,virudhunagar,general
+193,Nagercoil,nagercoil,kanniyakumari,general
+194,Colachel,colachel,kanniyakumari,general
+195,Padmanabhapuram,padmanabhapuram,kanniyakumari,sc
+196,Vilavancode,vilavancode,kanniyakumari,general
+197,Killiyoor,killiyoor,kanniyakumari,general
+198,Kanyakumari,kanyakumari,kanniyakumari,general
+199,Thiruvottiyur,thiruvottiyur,chennai,sc
+200,Dr. Radhakrishnan Nagar,dr-radhakrishnan-nagar,chennai,general
+201,Perambur,perambur,chennai,general
+202,Kolathur,kolathur,chennai,general
+203,Villivakkam,villivakkam,chennai,general
+204,Thiru-Vi-Ka Nagar,thiru-vi-ka-nagar,chennai,sc
+205,Egmore,egmore,chennai,general
+206,Royapuram,royapuram,chennai,general
+207,Harbour,harbour,chennai,sc
+208,Chepauk-Triplicane,chepauk-triplicane,chennai,general
+209,Thousand Lights,thousand-lights,chennai,general
+210,Anna Nagar,anna-nagar,chennai,general
+211,Virugambakkam,virugambakkam,chennai,general
+212,Saidapet,saidapet,chennai,sc
+213,Thiyagarayanagar,thiyagarayanagar,chennai,general
+214,Mylapore,mylapore,chennai,general
+215,Velachery,velachery,chennai,general
+216,Sholinganallur,sholinganallur,chennai,general
+217,Alandur,alandur,chengalpattu,general
+218,Sriperumbudur,sriperumbudur,kancheepuram,sc
+219,Pallavaram,pallavaram,chengalpattu,general
+220,Tambaram,tambaram,chengalpattu,general
+221,Chengalpattu,chengalpattu,chengalpattu,general
+222,Thiruporur,thiruporur,chengalpattu,general
+223,Cheyyur,cheyyur,chengalpattu,sc
+224,Madurantakam,madurantakam,chengalpattu,general
+225,Uthiramerur,uthiramerur,kancheepuram,general
+226,Kancheepuram,kancheepuram,kancheepuram,sc
+227,Arakkonam,arakkonam,ranipet,sc
+228,Sholingur,sholingur-2,vellore,general
+229,Thiruvallur,thiruvallur,thiruvallur,general
+230,Poonamallee,poonamallee,thiruvallur,sc
+231,Avadi,avadi,thiruvallur,general
+232,Maduravoyal,maduravoyal,thiruvallur,general
+233,Ambattur,ambattur,thiruvallur,general
+234,Madavaram,madavaram,thiruvallur,general
