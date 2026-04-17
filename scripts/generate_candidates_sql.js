@@ -248,7 +248,21 @@ for (const c of constituenciesCsv) {
 }
 lines.push('')
 
-// Insert new parties first
+// Upsert all known parties from parties.csv so the DB is always in sync
+lines.push('-- ── Known parties (from parties.csv) ────────────────────────────')
+for (const p of partiesCsv) {
+  if (!p.name || !p.abbreviation || !p.slug) continue
+  const alliance = p.alliance ? sq(p.alliance) : 'NULL'
+  const color    = p.color_hex ? sq(p.color_hex) : "'#94a3b8'"
+  lines.push(`INSERT INTO parties (name, abbreviation, slug, alliance, color_hex)`)
+  lines.push(`  VALUES (${sq(p.name)}, ${sq(p.abbreviation)}, ${sq(p.slug)}, ${alliance}, ${color})`)
+  lines.push(`  ON CONFLICT (slug) DO UPDATE SET`)
+  lines.push(`    name = EXCLUDED.name, abbreviation = EXCLUDED.abbreviation,`)
+  lines.push(`    alliance = EXCLUDED.alliance, color_hex = EXCLUDED.color_hex;`)
+}
+lines.push('')
+
+// Insert new small parties discovered during scrape (not in parties.csv)
 if (newParties.size > 0) {
   lines.push('-- ── New parties not in parties.csv ───────────────────────────')
   for (const [name, { slug, safeAbbrev }] of newParties) {
