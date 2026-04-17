@@ -26,12 +26,13 @@ function useFeaturedContests(partySlug) {
         .from('election_contests')
         .select(`
           id, assets_movable_lakh, assets_immovable_lakh,
-          liabilities_lakh, criminal_cases_pending,
+          liabilities_lakh, criminal_cases_pending, nomination_date,
           candidate:candidates(id, full_name, full_name_ta, slug, photo_url),
           party:parties(id, name, abbreviation, color_hex, slug),
           constituency:constituencies(name, slug)
         `)
         .eq('is_current_election', true)
+        .order('nomination_date', { ascending: true, nullsFirst: false })
         .limit(12)
 
       if (partySlug) {
@@ -87,9 +88,16 @@ export default function HomePage() {
 
       {/* Candidates grid */}
       <section>
-        <h2 className="text-base font-semibold text-slate-700 mb-3">
-          {selectedParty ? 'Candidates' : 'Featured Candidates'}
-        </h2>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-base font-semibold text-slate-700">
+            {selectedParty ? 'Candidates' : 'Recent Nominations'}
+          </h2>
+          {!selectedParty && (
+            <a href="/constituencies" className="text-xs text-sky-600 hover:underline">
+              All 234 constituencies →
+            </a>
+          )}
+        </div>
         {isLoading ? (
           <LoadingSpinner />
         ) : contests.length === 0 ? (
