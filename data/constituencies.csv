@@ -233,3 +233,17 @@ constituency_no,name,slug,district_slug,reserved_for
 232,Maduravoyal,maduravoyal,thiruvallur,general
 233,Ambattur,ambattur,thiruvallur,general
 234,Madavaram,madavaram,thiruvallur,general
+235,Chengam,chengam,tiruvannamalai,sc
+236,Dharapuram,dharapuram,tiruppur,sc
+237,Kangayam,kangayam,tiruppur,general
+238,Coonoor,coonoor,nilgiris,general
+239,Avanashi,avanashi,tiruppur,sc
+240,Kavundampalayam,kavundampalayam,coimbatore,general
+241,Athoor,athoor,dindigul,general
+242,Tittakudi,tittakudi,cuddalore,sc
+243,Thiruvaiyaru,thiruvaiyaru,thanjavur,general
+244,Thiruparankundram,thiruparankundram,madurai,general
+245,Thirumangalam,thirumangalam,madurai,general
+246,Tiruchuli,tiruchuli,virudhunagar,general
+247,Vasudevanallur,vasudevanallur,tenkasi,sc
+248,Palayamkottai,palayamkottai,tirunelveli,general

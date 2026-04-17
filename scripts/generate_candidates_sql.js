@@ -117,10 +117,29 @@ function findConstituencySlug(portalName) {
   return bestScore >= 0.4 ? best : null
 }
 
+// Manual aliases: portal party name (normalised) → abbreviation in parties.csv
+const PARTY_ALIASES = {
+  // TVK spelled differently on portal vs our CSV
+  'tamizhaga vaazhvurimai katchi': 'TVAK',
+  // AMMK
+  'amma makkal munnettra kazagam': 'AMMK',
+  'amma makkal munnetra kazhagam': 'AMMK',
+  // Puthiya Tamilagam
+  'puthiya tamilagam': 'PT',
+  // AIPTMK variants
+  'all india puratchi thalaivar makkal munnettra kazhagam': 'AIPTMK',
+  // NTK alternate spellings
+  'naam tamilar': 'NTK',
+  // MDMK variants
+  'marumalarchi dravida munnetra kazhagam': 'MDMK',
+}
+
 function findPartyAbbrev(partyName) {
   if (!partyName?.trim()) return 'IND'
   if (norm(partyName).includes('independent')) return 'IND'
   const n = norm(partyName)
+  // Check manual alias first
+  if (PARTY_ALIASES[n]) return PARTY_ALIASES[n]
   if (partyByName.has(n)) return partyByName.get(n)
 
   // Fuzzy
@@ -207,6 +226,20 @@ lines.push('')
 // Clean up old 2026 seed data to avoid duplicates with scraped candidates
 lines.push('-- ── Remove old manually-seeded 2026 contests (will be replaced by scraped data) ──')
 lines.push('DELETE FROM election_contests WHERE election_year = 2026;')
+lines.push('')
+
+// Insert any constituencies from our CSV that may not yet be in the DB
+// (the 14 added for unmatched portal ACs: Chengam, Dharapuram, Coonoor, etc.)
+lines.push('-- ── Ensure all constituencies exist (new rows for previously-missing ACs) ──')
+for (const c of constituenciesCsv) {
+  if (!c.name || !c.slug || !c.district_slug) continue
+  const reserved = c.reserved_for && c.reserved_for !== 'general' ? sq(c.reserved_for) : "'general'"
+  lines.push(`INSERT INTO constituencies (constituency_no, name, slug, district_id, reserved_for)`)
+  lines.push(`SELECT ${sq(String(c.constituency_no))}, ${sq(c.name)}, ${sq(c.slug)},`)
+  lines.push(`  d.id, ${reserved}`)
+  lines.push(`FROM districts d WHERE d.slug = ${sq(c.district_slug)}`)
+  lines.push(`ON CONFLICT (slug) DO NOTHING;`)
+}
 lines.push('')
 
 // Insert new parties first
