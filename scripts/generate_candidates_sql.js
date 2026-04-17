@@ -59,10 +59,13 @@ const AC_ALIASES = {
   'virugampakkam': 'virugambakkam',
   'shozhinganallur': 'sholinganallur',
   'sholinghur': 'sholingur',
-  'kilvaithinankuppam': 'kilvaithinankuppam',
-  'tiruvannamalai': 'tiruvannamalai',
-  // Portal sometimes uses alternate spellings
-  'dr radhakrishnan nagar': 'dr radhakrishnan nagar',
+  'gudiyattam': 'gudiyatham',
+  // Villupuram district spellings
+  'viluppuram': 'villupuram',
+  'tirukkoyilur': 'tirukoilur',
+  'ulundurpettai': 'ulundurpet',
+  // NOTE: "Chengam (SC)" from portal has no match in constituencies.csv
+  // It needs to be added to constituencies.csv manually after verification
 }
 
 function extractACName(portalName) {

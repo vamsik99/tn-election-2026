@@ -101,6 +101,11 @@ const AC_ALIASES = {
   'virugampakkam': 'virugambakkam',
   'shozhinganallur': 'sholinganallur',
   'sholinghur': 'sholingur',
+  'gudiyattam': 'gudiyatham',
+  'viluppuram': 'villupuram',
+  'tirukkoyilur': 'tirukoilur',
+  'ulundurpettai': 'ulundurpet',
+  // "Chengam (SC)" needs manual resolution — not in constituencies.csv
 }
 
 function matchConstituency(portalName, dbConstituencies) {
