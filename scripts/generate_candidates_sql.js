@@ -165,6 +165,7 @@ function convertDate(dmy) {
 
 // Deduplicate
 const seen = new Set()
+const slugUsed = new Map()  // slug → count, to detect and resolve collisions
 const records = []
 const unmatchedACs = new Set()
 const unmatchedParties = new Map()
@@ -197,7 +198,12 @@ for (const row of scrapedRows) {
   const genderNorm = gender?.toLowerCase().includes('f') ? 'female'
                    : gender?.toLowerCase().includes('m') ? 'male' : 'other'
 
-  const candidateSlug = slugify(candidate_name) + '-' + constituencySlug
+  // Resolve slug collisions: if two candidates in the same constituency slugify
+  // to the same string, append -2, -3 etc. so the VALUES clause has no duplicates.
+  const baseSlug = slugify(candidate_name) + '-' + constituencySlug
+  const priorCount = slugUsed.get(baseSlug) || 0
+  slugUsed.set(baseSlug, priorCount + 1)
+  const candidateSlug = priorCount === 0 ? baseSlug : `${baseSlug}-${priorCount + 1}`
 
   records.push({
     candidateSlug,
