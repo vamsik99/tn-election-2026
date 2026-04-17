@@ -5,12 +5,19 @@ import PartyCard from '../components/party/PartyCard'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 
 const ALLIANCES = ['All', 'INDIA', 'NDA', 'Independent']
+// Gray is the placeholder color for auto-added unknown parties — hide from the parties listing
+const GENERIC_COLOR = '#94a3b8'
 
 export default function PartiesPage() {
   const [alliance, setAlliance] = useState('All')
-  const { data: parties = [], isLoading } = useParties()
+  const { data: allParties = [], isLoading } = useParties()
 
-  const filtered = parties.filter((p) => {
+  // Exclude generic placeholder parties (auto-inserted from scraper for tiny unknown parties)
+  const knownParties = allParties.filter(
+    (p) => p.color_hex && p.color_hex.toLowerCase() !== GENERIC_COLOR
+  )
+
+  const filtered = knownParties.filter((p) => {
     if (alliance === 'All') return true
     if (alliance === 'Independent') return !p.alliance
     return p.alliance === alliance
@@ -24,7 +31,9 @@ export default function PartiesPage() {
 
       <div className="mb-5">
         <h1 className="text-xl font-bold text-slate-800 mb-1">Political Parties</h1>
-        <p className="text-sm text-slate-500">Contesting in Tamil Nadu 2026</p>
+        <p className="text-sm text-slate-500">
+          {knownParties.length} parties contesting in Tamil Nadu 2026
+        </p>
       </div>
 
       {/* Alliance filter */}

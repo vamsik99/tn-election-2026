@@ -20,13 +20,22 @@ export default function ConstituencyPage() {
     <EmptyState icon="🏛" title="Constituency not found" message="Check the URL or search above." />
   )
 
-  const contests = (data.contests ?? []).filter((c) => {
+  const allContests = data.contests ?? []
+
+  // Slugs of parties actually contesting in this constituency (for filtered strip)
+  const localPartySlugs = new Set(
+    allContests.map((c) => c.party?.slug).filter(Boolean)
+  )
+
+  const contests = allContests.filter((c) => {
     if (!partyFilter) return true
     return c.party?.slug === partyFilter
   })
 
-  // Last past result (most recent election)
-  const lastResult = (data.past_results ?? []).sort((a, b) => b.election_year - a.election_year)[0]
+  // Last past result (most recent non-2026 election)
+  const lastResult = (data.past_results ?? [])
+    .filter((r) => r.election_year < 2026)
+    .sort((a, b) => b.election_year - a.election_year)[0]
 
   return (
     <>
@@ -83,10 +92,17 @@ export default function ConstituencyPage() {
       {/* 2026 Candidates */}
       <section className="mb-6">
         <h2 className="text-base font-semibold text-slate-700 mb-3">
-          2026 Candidates ({contests.length})
+          2026 Candidates{' '}
+          {partyFilter
+            ? `(${contests.length} of ${allContests.length})`
+            : `(${allContests.length})`}
         </h2>
         <div className="mb-3">
-          <PartyFilterStrip selected={partyFilter} onSelect={setPartyFilter} />
+          <PartyFilterStrip
+            selected={partyFilter}
+            onSelect={setPartyFilter}
+            limitToSlugs={localPartySlugs}
+          />
         </div>
         {contests.length === 0 ? (
           <EmptyState icon="👤" title="No candidates yet" message="Candidate data will appear once nominations are filed." />

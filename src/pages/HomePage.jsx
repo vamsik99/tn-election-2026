@@ -11,6 +11,26 @@ import { supabase } from '../lib/supabase'
 import { useQuery } from '@tanstack/react-query'
 import { IS_DEMO, DEMO_CONTESTS } from '../lib/demoData'
 
+function useStats() {
+  return useQuery({
+    queryKey: ['home-stats'],
+    queryFn: async () => {
+      if (IS_DEMO) return { candidates: 42, constituencies: 234, parties: 12 }
+      const [{ count: candidates }, { count: constituencies }] = await Promise.all([
+        supabase
+          .from('election_contests')
+          .select('*', { count: 'exact', head: true })
+          .eq('is_current_election', true),
+        supabase
+          .from('constituencies')
+          .select('*', { count: 'exact', head: true }),
+      ])
+      return { candidates: candidates ?? 0, constituencies: constituencies ?? 0 }
+    },
+    staleTime: 1000 * 60 * 10,
+  })
+}
+
 function useFeaturedContests(partySlug) {
   return useQuery({
     queryKey: ['featured-contests', partySlug],
@@ -56,6 +76,7 @@ export default function HomePage() {
   const [selectedParty, setSelectedParty] = useState(null)
   const navigate = useNavigate()
   const { data: contests = [], isLoading } = useFeaturedContests(selectedParty)
+  const { data: stats } = useStats()
 
   return (
     <>
@@ -67,7 +88,20 @@ export default function HomePage() {
       {/* Hero */}
       <div className="bg-gradient-to-br from-sky-600 to-sky-800 rounded-2xl p-6 sm:p-8 mb-6 text-white text-center shadow-lg">
         <h1 className="text-2xl sm:text-3xl font-bold mb-1">Tamil Nadu Elections 2026</h1>
-        <p className="text-sky-200 text-sm mb-5">Know your candidates before you vote</p>
+        <p className="text-sky-200 text-sm mb-4">Know your candidates before you vote</p>
+        {stats && (
+          <div className="flex justify-center gap-6 mb-5">
+            <div>
+              <p className="text-2xl font-bold">{stats.candidates.toLocaleString()}</p>
+              <p className="text-xs text-sky-200">Candidates</p>
+            </div>
+            <div className="w-px bg-sky-500" />
+            <div>
+              <p className="text-2xl font-bold">{stats.constituencies}</p>
+              <p className="text-xs text-sky-200">Constituencies</p>
+            </div>
+          </div>
+        )}
         <SearchBar className="max-w-lg mx-auto" />
       </div>
 

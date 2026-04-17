@@ -54,18 +54,40 @@ for (const p of partiesCsv) {
 }
 
 // Manual aliases: portal name (normalised) → our CSV name (normalised)
+// Portal spelling (normalised) → our constituencies.csv name (normalised)
+// Run scripts/compare_constituencies.js to audit mismatches
 const AC_ALIASES = {
+  // Chennai / northern TN
   'chepauk thiruvallikeni': 'chepauk triplicane',
   'virugampakkam': 'virugambakkam',
   'shozhinganallur': 'sholinganallur',
+  // Thiruvallur / Vellore
   'sholinghur': 'sholingur',
+  // Tiruvannamalai / Dharmapuri
   'gudiyattam': 'gudiyatham',
-  // Villupuram district spellings
+  // Villupuram district
   'viluppuram': 'villupuram',
   'tirukkoyilur': 'tirukoilur',
   'ulundurpettai': 'ulundurpet',
-  // NOTE: "Chengam (SC)" from portal has no match in constituencies.csv
-  // It needs to be added to constituencies.csv manually after verification
+  // Trichy area
+  'thiruverumbur': 'thiruverambur',
+  // Nagapattinam / Thanjavur
+  'thiruthuraipoondi': 'thalaignayiru',  // best guess — both in Nagapattinam
+  'gandarvakkottai': 'gandharvakottai',
+  // Ramanathapuram
+  'mudhukulathur': 'mudukulathur',
+  // Thoothukudi / Kanyakumari
+  'thoothukkudi': 'thoothukudi',
+  'colachal': 'colachel',
+  'kanniyakumari': 'kanyakumari',
+  // Dindigul
+  'nilakkottai': 'nilakottai',
+  // NOTE: These portal ACs have no clear match in constituencies.csv:
+  // 62-Chengam(SC), 101-Dharapuram(SC), 102-Kangayam, 110-Coonoor,
+  // 112-Avanashi(SC), 117-Kavundampalayam, 129-Athoor, 151-Tittakudi(SC),
+  // 173-Thiruvaiyaru, 195-Thiruparankundram, 196-Thirumangalam,
+  // 208-Tiruchuli, 220-Vasudevanallur(SC), 226-Palayamkottai
+  // These constituencies' candidates won't be imported until CSV is corrected.
 }
 
 function extractACName(portalName) {
@@ -143,11 +165,13 @@ for (const row of scrapedRows) {
   const partyAbbrev = findPartyAbbrev(party_name)
   if (!partyAbbrev && party_name && !norm(party_name).includes('independent')) {
     unmatchedParties.set(party_name, (unmatchedParties.get(party_name) || 0) + 1)
-    // Register as new party
+    // Register as new party — generate safeAbbrev once and store it
     if (!newParties.has(party_name)) {
       const slug = slugify(party_name)
-      const abbrev = party_name.replace(/[^A-Z]/g, '').substring(0, 8) || slugify(party_name).substring(0, 8).toUpperCase()
-      newParties.set(party_name, { slug, abbrev })
+      const rawAbbrev = party_name.replace(/[^A-Z]/g, '').substring(0, 8) || slugify(party_name).substring(0, 8).toUpperCase()
+      // Add random suffix to guarantee uniqueness in the abbreviation UNIQUE constraint
+      const safeAbbrev = rawAbbrev + '_' + Math.random().toString(36).slice(2, 5).toUpperCase()
+      newParties.set(party_name, { slug, abbrev: rawAbbrev, safeAbbrev })
     }
   }
 
@@ -161,7 +185,9 @@ for (const row of scrapedRows) {
     fullName: candidate_name,
     genderNorm,
     constituencySlug,
-    partyAbbrev: partyAbbrev || (newParties.has(party_name) ? newParties.get(party_name).abbrev : null),
+    // For known parties use the CSV abbreviation; for new parties use the safeAbbrev
+    // so the LEFT JOIN in the contests INSERT finds the right row
+    partyAbbrev: partyAbbrev || (newParties.has(party_name) ? newParties.get(party_name).safeAbbrev : null),
     partyNameRaw: party_name,
     nominationDate: convertDate(nomination_date),
   })
@@ -178,11 +204,15 @@ lines.push('-- Run this in Supabase SQL Editor')
 lines.push('-- ================================================================')
 lines.push('')
 
+// Clean up old 2026 seed data to avoid duplicates with scraped candidates
+lines.push('-- ── Remove old manually-seeded 2026 contests (will be replaced by scraped data) ──')
+lines.push('DELETE FROM election_contests WHERE election_year = 2026;')
+lines.push('')
+
 // Insert new parties first
 if (newParties.size > 0) {
   lines.push('-- ── New parties not in parties.csv ───────────────────────────')
-  for (const [name, { slug, abbrev }] of newParties) {
-    const safeAbbrev = abbrev + '_' + Math.random().toString(36).slice(2,5).toUpperCase()
+  for (const [name, { slug, safeAbbrev }] of newParties) {
     lines.push(`INSERT INTO parties (name, abbreviation, slug, color_hex)`)
     lines.push(`  VALUES (${sq(name)}, ${sq(safeAbbrev)}, ${sq(slug + '-party')}, '#94a3b8')`)
     lines.push(`  ON CONFLICT (slug) DO NOTHING;`)
@@ -234,9 +264,33 @@ lines.push(`    is_current_election = TRUE,`)
 lines.push(`    nomination_date = EXCLUDED.nomination_date;`)
 lines.push('')
 
-// Refresh search index
-lines.push('-- Refresh full-text search index')
-lines.push('REFRESH MATERIALIZED VIEW search_index;')
+// Update search_index to include constituency name as sub_label for candidates
+lines.push('-- ── Update search_index: candidates now include constituency sub_label ──')
+lines.push(`DROP MATERIALIZED VIEW IF EXISTS search_index;`)
+lines.push(`CREATE MATERIALIZED VIEW search_index AS`)
+lines.push(`SELECT`)
+lines.push(`  'candidate' AS entity_type,`)
+lines.push(`  c.id::TEXT AS entity_id,`)
+lines.push(`  c.slug,`)
+lines.push(`  c.full_name AS label,`)
+lines.push(`  c.full_name_ta AS label_ta,`)
+lines.push(`  co.name AS sub_label,`)
+lines.push(`  to_tsvector('simple', c.full_name) AS tsv`)
+lines.push(`FROM candidates c`)
+lines.push(`LEFT JOIN election_contests ec ON ec.candidate_id = c.id AND ec.is_current_election = true`)
+lines.push(`LEFT JOIN constituencies co ON co.id = ec.constituency_id`)
+lines.push(`UNION ALL`)
+lines.push(`SELECT`)
+lines.push(`  'constituency',`)
+lines.push(`  co.id::TEXT,`)
+lines.push(`  co.slug,`)
+lines.push(`  co.name,`)
+lines.push(`  co.name_ta,`)
+lines.push(`  d.name,`)
+lines.push(`  to_tsvector('simple', co.name || ' ' || d.name)`)
+lines.push(`FROM constituencies co`)
+lines.push(`JOIN districts d ON d.id = co.district_id;`)
+lines.push(`CREATE INDEX idx_search_tsv ON search_index USING gin(tsv);`)
 lines.push('')
 
 const sql = lines.join('\n')
