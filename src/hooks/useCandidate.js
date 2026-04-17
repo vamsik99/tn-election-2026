@@ -17,7 +17,7 @@ export function useCandidate(slug) {
         .select(`
           *,
           contests:election_contests(
-            id, election_year, is_current_election,
+            id, election_year, is_current_election, nomination_date,
             assets_movable_lakh, assets_immovable_lakh,
             liabilities_lakh, criminal_cases_pending, criminal_cases_detail,
             income_annual_lakh, affidavit_url,

@@ -1,12 +1,18 @@
 import PartyBadge from '../party/PartyBadge'
 import { useParties } from '../../hooks/useParties'
 
+// Show only parties with a curated color (major/known parties).
+// Unknown small parties fall back to gray (#94a3b8) and are hidden from the strip.
+const GENERIC_COLOR = '#94a3b8'
+
 /**
  * Horizontal scrollable strip of party icon chips.
  * Highlights the active party and calls onSelect(slug) on tap.
  */
 export default function PartyFilterStrip({ selected, onSelect }) {
-  const { data: parties = [], isLoading } = useParties()
+  const { data: allParties = [], isLoading } = useParties()
+  // Only show major parties with a distinctive color
+  const parties = allParties.filter(p => p.color_hex && p.color_hex !== GENERIC_COLOR)
 
   if (isLoading) {
     return (

@@ -55,12 +55,23 @@ export default function CandidateCard({ contest, showConstituency = false }) {
         </div>
       </div>
 
-      {/* Affidavit summary */}
+      {/* Affidavit summary / nomination date */}
       <div className="flex-shrink-0 text-right hidden sm:block">
-        <p className="text-xs text-slate-400">Assets</p>
-        <p className="text-sm font-medium text-slate-700">
-          {formatLakh((contest.assets_movable_lakh ?? 0) + (contest.assets_immovable_lakh ?? 0))}
-        </p>
+        {contest.assets_movable_lakh != null || contest.assets_immovable_lakh != null ? (
+          <>
+            <p className="text-xs text-slate-400">Assets</p>
+            <p className="text-sm font-medium text-slate-700">
+              {formatLakh((contest.assets_movable_lakh ?? 0) + (contest.assets_immovable_lakh ?? 0))}
+            </p>
+          </>
+        ) : contest.nomination_date ? (
+          <>
+            <p className="text-xs text-slate-400">Filed</p>
+            <p className="text-xs font-medium text-slate-500">
+              {new Date(contest.nomination_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+            </p>
+          </>
+        ) : null}
         {contest.criminal_cases_pending > 0 && (
           <span className="inline-block mt-1 px-1.5 py-0.5 bg-red-50 text-red-600 text-xs rounded font-medium">
             {contest.criminal_cases_pending} case{contest.criminal_cases_pending > 1 ? 's' : ''}

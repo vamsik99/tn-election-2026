@@ -24,7 +24,7 @@ export function useConstituency(slug) {
           ),
           contests:election_contests(
             id, assets_movable_lakh, assets_immovable_lakh,
-            liabilities_lakh, criminal_cases_pending, affidavit_url,
+            liabilities_lakh, criminal_cases_pending, affidavit_url, nomination_date,
             candidate:candidates(id, full_name, full_name_ta, slug, photo_url, education, profession, date_of_birth),
             party:parties(id, abbreviation, name, color_hex, slug, alliance)
           )

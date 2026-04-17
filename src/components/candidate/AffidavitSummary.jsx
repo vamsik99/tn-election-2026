@@ -15,7 +15,25 @@ function StatCard({ label, value, highlight }) {
 
 export default function AffidavitSummary({ contest }) {
   const totalAssets = (contest.assets_movable_lakh ?? 0) + (contest.assets_immovable_lakh ?? 0)
-  const hasCases = contest.criminal_cases_pending > 0
+  const hasCases = (contest.criminal_cases_pending ?? 0) > 0
+  const hasFinancialData = contest.assets_movable_lakh != null || contest.assets_immovable_lakh != null
+
+  if (!hasFinancialData && !hasCases) {
+    return (
+      <div className="space-y-2">
+        <h3 className="font-semibold text-slate-700 text-sm uppercase tracking-wide">Affidavit Disclosure</h3>
+        <p className="text-sm text-slate-500 bg-slate-50 rounded-xl p-3 border border-slate-100">
+          Affidavit details (assets, liabilities, criminal cases) are sourced from the ECI portal
+          and will be added as they become publicly available.
+          {contest.nomination_date && (
+            <span className="block mt-1 text-xs text-slate-400">
+              Nomination filed: {new Date(contest.nomination_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </span>
+          )}
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-3">
