@@ -1,20 +1,49 @@
+import { useState, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { useParty } from '../hooks/useParty'
+import { supabase } from '../lib/supabase'
 import PartyBadge from '../components/party/PartyBadge'
 import AllianceTag from '../components/party/AllianceTag'
 import CandidateCard from '../components/candidate/CandidateCard'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 import EmptyState from '../components/ui/EmptyState'
 
+const PAGE_SIZE = 50
+
 export default function PartyPage() {
   const { slug } = useParams()
   const { data: party, isLoading, isError } = useParty(slug)
+  const [extraContests, setExtraContests] = useState([])
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [currentOffset, setCurrentOffset] = useState(PAGE_SIZE)
+
+  const loadMore = useCallback(async () => {
+    if (!party?.id) return
+    setLoadingMore(true)
+    const { data } = await supabase
+      .from('election_contests')
+      .select(`
+        id, assets_movable_lakh, assets_immovable_lakh,
+        liabilities_lakh, criminal_cases_pending,
+        candidate:candidates(id, full_name, slug, photo_url),
+        constituency:constituencies(name, slug, district:districts(name))
+      `)
+      .eq('party_id', party.id)
+      .eq('is_current_election', true)
+      .order('constituency_id')
+      .range(currentOffset, currentOffset + PAGE_SIZE - 1)
+    setExtraContests(prev => [...prev, ...(data ?? [])])
+    setCurrentOffset(o => o + PAGE_SIZE)
+    setLoadingMore(false)
+  }, [party?.id, currentOffset])
 
   if (isLoading) return <LoadingSpinner label="Loading party…" />
   if (isError || !party) return <EmptyState icon="🏳" title="Party not found" />
 
-  const contests = party.contests ?? []
+  const allContests = [...(party.contests ?? []), ...extraContests]
+  const total = party.total ?? 0
+  const hasMore = allContests.length < total
 
   return (
     <>
@@ -43,23 +72,37 @@ export default function PartyPage() {
           </div>
         </div>
         <div className="ml-auto text-right">
-          <p className="text-2xl font-bold text-sky-600">{contests.length}</p>
+          <p className="text-2xl font-bold text-sky-600">{total}</p>
           <p className="text-xs text-slate-400">candidates</p>
         </div>
       </div>
 
       {/* Candidates */}
       <h2 className="text-base font-semibold text-slate-700 mb-3">
-        Candidates ({contests.length})
+        Candidates {total > 0 && `(${allContests.length}${hasMore ? ` of ${total}` : ''})`}
       </h2>
-      {contests.length === 0 ? (
+      {allContests.length === 0 ? (
         <EmptyState icon="👤" title="No candidates yet" />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {contests.map((c) => (
-            <CandidateCard key={c.id} contest={c} showConstituency />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {allContests.map((c) => (
+              <CandidateCard key={c.id} contest={c} showConstituency />
+            ))}
+          </div>
+
+          {hasMore && (
+            <div className="mt-5 text-center">
+              <button
+                onClick={loadMore}
+                disabled={loadingMore}
+                className="px-5 py-2.5 bg-sky-500 text-white text-sm font-medium rounded-xl hover:bg-sky-600 disabled:opacity-50 transition-colors"
+              >
+                {loadingMore ? 'Loading…' : `Load more (${total - allContests.length} remaining)`}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </>
   )
